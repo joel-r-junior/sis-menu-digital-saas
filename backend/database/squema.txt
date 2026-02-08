@@ -1,0 +1,110 @@
+
+****************************
+Tabela user_inquilinos
+
+CREATE TABLE `user_inquilinos` (
+	`id_inquilino` INT(10) NOT NULL AUTO_INCREMENT,
+	`nome_inquilino` VARCHAR(250) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`cpf_inquilino` VARCHAR(25) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`nome_empresa` VARCHAR(250) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`tel_empresa` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`email_empresa` VARCHAR(250) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`endereco_empresa` VARCHAR(250) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`idcidade` INT(10) NOT NULL,
+	`idestado` INT(10) NOT NULL,
+	`cep_empresa` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`plano_acesso_id` INT(10) NOT NULL,
+	`nome_conta` VARCHAR(250) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`valor_plano` DECIMAL(5,2) NOT NULL,
+	`data_assinatura` DATE NOT NULL,
+	`data_venc_assinatura` DATE NOT NULL,
+	`status_assinatura` VARCHAR(50) NOT NULL DEFAULT 'Ativo' COLLATE 'utf8mb4_0900_ai_ci',
+	`forma_pgto` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`data_modificacao` DATE NULL DEFAULT NULL,
+	PRIMARY KEY (`id_inquilino`) USING BTREE
+)
+COLLATE='utf8mb4_0900_ai_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=2
+;
+
+
+****************************
+Tabela user_dados_empresa
+
+CREATE TABLE `user_dados_empresa` (
+	`id_empresa` INT(10) NOT NULL AUTO_INCREMENT,
+	`inquilino_id` INT(10) NOT NULL,
+	`nome_empresa` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`razao_social` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`cnpj` CHAR(18) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`inscricao_estadual` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`inscricao_municipal` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`regime_tributario` ENUM('Simples Nacional','Lucro Presumido','Lucro Real','Isento') NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`endereco` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`bairro` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`cidade_id` INT(10) NULL DEFAULT NULL,
+	`estado_id` INT(10) NULL DEFAULT NULL,
+	`cep` CHAR(9) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`telefone_principal` VARCHAR(15) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`email_principal` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`nome_responsavel` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`cpf_responsavel` CHAR(14) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`banco_nome` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`agencia` VARCHAR(10) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`conta_corrente` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`pix` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`banco_nome_sec` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`agencia_sec` VARCHAR(10) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`conta_corrente_sec` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`pix_sec` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`site_empresa` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`logo_path` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`data_fundacao` DATE NULL DEFAULT NULL,
+	`observacoes` TEXT NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`ativo` ENUM('sim','nao') NULL DEFAULT 'sim' COLLATE 'utf8mb4_0900_ai_ci',
+	`usuario_criacao` INT(10) NOT NULL,
+	`data_criacao` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`usuario_modif` INT(10) NULL DEFAULT NULL,
+	`data_modif` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id_empresa`) USING BTREE,
+	INDEX `FK_inquilino_empresa` (`inquilino_id`) USING BTREE,
+	CONSTRAINT `FK_inquilino_empresa` FOREIGN KEY (`inquilino_id`) REFERENCES `user_inquilinos` (`id_inquilino`) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COLLATE='utf8mb4_0900_ai_ci'
+ENGINE=InnoDB
+;
+
+
+****************************
+Tabela users
+
+CREATE TABLE `users` (
+	`id_users` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`inquilino_id` INT(10) NOT NULL,
+	`name` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`email` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`email_verified_at` TIMESTAMP NULL DEFAULT NULL,
+	`password` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`role` ENUM('proprietário','administrador','gerente','usuario','cliente') NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`ativo_sim` TINYINT(1) NULL DEFAULT '1',
+	`last_login_at` TIMESTAMP NULL DEFAULT NULL,
+	`last_login_ip` VARCHAR(45) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`avatar` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`telefone` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`created_by` BIGINT(20) UNSIGNED NULL DEFAULT NULL,
+	`updated_by` BIGINT(20) UNSIGNED NULL DEFAULT NULL,
+	`remember_token` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id_users`) USING BTREE,
+	UNIQUE INDEX `uniq_inquilino_email` (`inquilino_id`, `email`) USING BTREE,
+	INDEX `idx_inquilino_id` (`inquilino_id`) USING BTREE,
+	INDEX `idx_email` (`email`) USING BTREE,
+	INDEX `idx_active` (`ativo_sim`) USING BTREE,
+	CONSTRAINT `fk_user_inquilino` FOREIGN KEY (`inquilino_id`) REFERENCES `user_inquilinos` (`id_inquilino`) ON UPDATE NO ACTION ON DELETE CASCADE
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=4
+;
