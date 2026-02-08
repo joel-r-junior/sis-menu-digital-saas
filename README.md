@@ -45,4 +45,4 @@ Sistema completo de gestão para pequenos restaurantes, permitindo cadastro de c
 4. No frontend, rode `npm install` e `npm run dev`.
 
 ---
-Desenvolvido por **[Seu Nome]** para fins de estudo e portfólio.
+Desenvolvido por **Joel Ribeiro Junior** para fins de estudo e portfólio.
