@@ -1,4 +1,4 @@
-# 🍔 SisMenu Digital - SaaS para Gestão de Restaurantes
+# SisMenu Digital - SaaS para Gestão de Restaurantes
 
 Sistema completo de gestão para pequenos restaurantes, permitindo cadastro de cardápio, geração de QR Code e recebimento de pedidos em tempo real.
 
